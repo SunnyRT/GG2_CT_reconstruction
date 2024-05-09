@@ -14,6 +14,13 @@ def plot(data):
 	plt.plot(data)
 	plt.show()
 
+def plots(datas):
+	"""plot multiple sets of data within a single graph"""
+	for data in datas:
+		plt.plot(data)
+	plt.show()
+
+
 def save_draw(data, storage_directory, file_name, map='gray', caxis=None, title=None):
 	"""save an image"""
 	create_figure(data, map, caxis, title)
