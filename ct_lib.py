@@ -3,6 +3,7 @@ import numpy as np
 import numpy.matlib
 import os
 
+
 def draw(data, map='gray', caxis=None):
 	"""Draw an image"""
 	create_figure(data, map, caxis)
@@ -14,10 +15,24 @@ def plot(data):
 	plt.plot(data)
 	plt.show()
 
-def plots(datas):
+def plots(datas, title = None, labels = None):
 	"""plot multiple sets of data within a single graph"""
-	for data in datas:
-		plt.plot(data)
+	
+	if labels is not None:
+		# check datas and labels have consistent size
+		if len(datas) == len(labels):
+			for i in range(len(datas)):
+				plt.plot(datas[i], label = labels[i])
+		else:
+			raise ValueError('labels do not match number of data sets')
+		plt.legend()
+	else:
+		for data in datas:
+			plt.plot(data)
+		
+	if title is not None:
+		plt.title( title )
+
 	plt.show()
 
 
