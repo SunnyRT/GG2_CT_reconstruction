@@ -46,7 +46,7 @@ def ct_detect(p, coeffs, depth, mas=10000):
 	samples = depth.shape[1]
 
 	# extend source photon array so it covers all samples
-	detector_photons = np.zeros([energies, samples])
+	detector_photons = np.zeros((energies, samples))
 	for e in range(energies):
 		detector_photons[e] = p[e]
 
@@ -59,6 +59,7 @@ def ct_detect(p, coeffs, depth, mas=10000):
 
 	# model noise
 
+	
 	# minimum detection is one photon
 	detector_photons = np.clip(detector_photons, 1, None)
 
