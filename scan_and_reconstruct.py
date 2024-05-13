@@ -17,13 +17,18 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 
 	# convert source (photons per (mas, cm^2)) to photons
 
+	# TODO: by YQ
 	# create sinogram from phantom data, with received detector values
+	sinogram = ct_scan(photons, material, phantom, scale, angles, mas) 
 
 	# convert detector values into calibrated attenuation values
 
 	# Ram-Lak
 
+	# TODO: by YQ
 	# Back-projection
+	# The parameter "sinogram" is what we got after the ramp filter
+	reconstruction = back_project(sinogram)
 
 	# convert to Hounsfield Units
 
