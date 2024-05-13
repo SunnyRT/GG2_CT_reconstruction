@@ -37,6 +37,7 @@ def phantom(ellipses, n):
 
 	return phantom_instance
 	
+# TODO: by RT. To add an additional argument offset, to change positions of the target attenuators
 def ct_phantom(names, n, type, metal=None):
 
 	""" ct_phantom create phantom for CT scanning
