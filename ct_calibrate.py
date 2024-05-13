@@ -3,7 +3,7 @@ import scipy
 from scipy import interpolate
 
 
-# TODO: by RT
+# TODO: (RT)
 from ct_detect import ct_detect
 def ct_calibrate(photons, material, sinogram, scale):
 

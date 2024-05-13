@@ -37,8 +37,9 @@ def phantom(ellipses, n):
 
 	return phantom_instance
 	
-# TODO: by RT. To add an additional argument offset, to change positions of the target attenuators
-def ct_phantom(names, n, type, metal=None):
+# TODO: (RT)To add an additional argument offset, to change positions of the target attenuators
+# offset = [x_offset, y_offset]
+def ct_phantom(names, n, type, metal=None, offset=None):
 
 	""" ct_phantom create phantom for CT scanning
 		x = ct_phantom(names, n, type, metal) creates a CT phantom in x of
@@ -91,10 +92,11 @@ def ct_phantom(names, n, type, metal=None):
 				x[index] = tissue
 
 	elif type == 2:
-		
+		if offset is None:
+			offset = np.zeros(2)
 		# impulse for looking at resolution
 		x = np.zeros((n, n))
-		x[int(n / 2)][int(n / 2)] = tissue
+		x[int(n / 2) + offset[0]][int(n / 2) + offset[1]] = tissue
 		
 	elif type == 8:
 
