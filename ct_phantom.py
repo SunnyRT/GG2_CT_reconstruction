@@ -4,6 +4,7 @@ import math
 
 def phantom(ellipses, n):
 	"""generates an artificial phantom given ellipse parameters and size n"""
+	"""ellipse parameters [amplitude, a, b, x_offset, y_offset , rotation phi]"""
 
 	#convert to numpy array
 	ellipses = np.array(ellipses)

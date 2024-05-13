@@ -30,6 +30,7 @@ def test_1():
 	save_draw(p, 'results', 'test_1_phantom')
 
 	# how to check whether these results are actually correct?
+	# TODO: by RT: check that the 2 drawings of reconstructed scan image and direct phantom image are identical
 
 def test_2():
 	# explain what this test is for
