@@ -45,11 +45,11 @@ def ct_scan(photons, material, phantom, scale, angles, mas=10000):
 		y0 = xi * math.sin(p) + yi * math.cos(p) + (n/2) - 0.5
 
 		# For each material, add up how many pixels contain this on each ray
-		depth = np.zeros((len(material.coeffs), n))
+		depth = np.zeros((len(material.coeffs), n)) # each column represents the material composition along the projection line for a particiular r offset
 
 		for index, m in enumerate(materials):
 			interpolated = scipy.ndimage.map_coordinates(material_phantom[index], [y0, x0], order=1, mode='constant', cval=0, prefilter=False)
-			depth[m] = np.sum(interpolated, axis=0)
+			depth[m] = np.sum(interpolated, axis=0) # sum over y0 direction
 
 		# only necessary for more complex forms of interpolation above
 		depth = np.clip(depth, 0, None)
