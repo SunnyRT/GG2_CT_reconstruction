@@ -47,15 +47,12 @@ def ct_detect(p, coeffs, depth, mas=10000):
 
 	# extend source photon array so it covers all samples
 	detector_photons = np.zeros((energies, samples))
-	print(type(detector_photons))
 	for e in range(energies):
 		detector_photons[e] = p[e]
-	print(type(detector_photons))
+	
 
 	# calculate array of residual mev x samples for each material in turn
 	for m in range(materials):
-		print(detector_photons.shape)
-		print(type(detector_photons))
 		detector_photons = attenuate(detector_photons, coeffs[m], depth[m])
 
 	# sum this over energies
