@@ -19,7 +19,21 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	m = np.ceil(np.log(2*n-1) / np.log(2))
 	m = int(2 ** m)
 
+
+
+	# TODO:(RT)
 	# apply filter to all angles
+	omega_ary = np.linspace(-m/2, m/2, m+1) #FIXME: what should be sampling frequency???
+	f_ary = np.zeros(m)
+	for (i, omega) in enumerate(omega_ary):
+		f_ary[i] = np.abs(omega) / (2*math.pi) * (np.cos(omega * math.pi / m))**alpha
+	
+	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
+	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
+	FT_filtered = np.multiply(FT, f_ary)
+	sinogram = np.fft.ifft(FT_filtered, n=n, axis=1)
+
+
 	print('Ramp filtering')
 	
 	return sinogram
