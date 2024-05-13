@@ -13,6 +13,7 @@ def attenuate(original_energy, coeff, depth):
 	"""
 
 	# check original energy is energy x samples
+	# TODO: (taz) reshape(1,1) has dimension = 2, eg. original_energy = np.array([1, 2, 3, 4, 5]) sample = 1; eg. original_energy = np.array([1, 2, 3, 4, 5])%([6, 7, 8, 9, 10]) sample =5
 	if type(original_energy) != np.ndarray:
 		original_energy = np.array([original_energy]).reshape((1, 1))
 	elif original_energy.ndim == 1:
@@ -21,6 +22,7 @@ def attenuate(original_energy, coeff, depth):
 		raise ValueError('input original_energy has more than two dimensions')
 	energies = original_energy.shape[0]
 	samples = original_energy.shape[1]
+
 
 	# check coeff is vector of energies
 	if type(coeff) != np.ndarray:
