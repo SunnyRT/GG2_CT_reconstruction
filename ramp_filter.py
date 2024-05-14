@@ -39,7 +39,7 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	return sinogram
 
 # TODO:(attempted by YQ)
-def ramp_filter_yq(sinogram, scale, alpha=0.001):
+def ramp_filter_yq(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use the parameter "scale"
 	# get input dimensions
 	angles = sinogram.shape[0]
 	n = sinogram.shape[1]
