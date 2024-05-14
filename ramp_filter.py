@@ -37,3 +37,35 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	print('Ramp filtering')
 	
 	return sinogram
+
+# TODO:(attempted by YQ)
+def ramp_filter_yq(sinogram, scale, alpha=0.001):
+	# get input dimensions
+	angles = sinogram.shape[0]
+	n = sinogram.shape[1]
+
+	#Set up filter to be at least twice as long as input
+	m = np.ceil(np.log(2*n-1) / np.log(2))
+	m = int(2 ** m)
+
+	freqs = np.fft.fftfreq(m)
+	omega_list = freqs*2*np.pi
+	omega_max = max(omega_list)
+	ramp = np.abs(omega_list)/(2*np.pi)
+
+	# Approximate correction: replacing the zero at k = 0 with 1/6 of the value at k=1
+	ramp[0] = (1/6)*ramp[1]
+	ramp = np.array(ramp)
+
+	f_ary = np.zeros(ramp)
+	for (i, ramp_coefficient) in enumerate(ramp):
+		f_ary[i] = ramp_coefficient * (np.cos(omega_list[i] * math.pi / m))**alpha
+	
+	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
+	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
+	FT_filtered = np.multiply(FT, f_ary)
+	sinogram = np.fft.ifft(FT_filtered, n=n, axis=1)
+
+	print('Ramp filtering')
+	
+	return sinogram
