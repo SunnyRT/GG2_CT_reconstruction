@@ -49,6 +49,8 @@ def ramp_filter_yq(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use
 	m = int(2 ** m)
 
 	freqs = np.fft.fftfreq(m)
+	# the np.fft.fftfreq(m) function calculates the frequency bins that correspond to the FFT of an array of length m
+	# These bins represent the frequencies that each FFT coefficient corresponds to.
 	omega_list = freqs*2*np.pi
 	omega_max = max(omega_list)
 	ramp = np.abs(omega_list)/(2*np.pi)
