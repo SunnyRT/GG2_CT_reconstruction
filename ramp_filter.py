@@ -23,16 +23,17 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 
 	# TODO:(RT)
 	# apply filter to all angles
-	omega_ary = np.linspace(-m/2, m/2, m+1) #FIXME: what should be sampling frequency???
+	# FIXME: I think sample spacing should be scale, which is the distance (in cm) between each pixel of data
+	# FIXME: unsure whether needs to sort order of omega_ary. coz documentations gives example output: array([ 0.  ,  1.25,  2.5 , ..., -3.75, -2.5 , -1.25])
+	omega_ary = 2*np.pi*np.fft.fftfreq(m, scale) 
 	f_ary = np.zeros(m)
 	for (i, omega) in enumerate(omega_ary):
 		f_ary[i] = np.abs(omega) / (2*math.pi) * (np.cos(omega * math.pi / m))**alpha
 	
 	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
-	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
+	FT = np.fft.fft(sinogram, n = m, axis=1) # FIXME: unsure about output length n=m
 	FT_filtered = np.multiply(FT, f_ary)
 	sinogram = np.fft.ifft(FT_filtered, n=n, axis=1)
-
 
 	print('Ramp filtering')
 	
