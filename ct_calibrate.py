@@ -17,13 +17,13 @@ def ct_calibrate(photons, material, sinogram, scale):
 	# Get dimensions and work out detection for just air of twice the side
 	# length (has to be the same as in ct_scan.py)
 	n = sinogram.shape[1] # number of r offset values i.e. number of dectors per angle
-	depth = 2*n*scale # Total distance between source and detectors = double phantom size
+	depth = np.array([2*n*scale]) # Total distance between source and detectors = double phantom size
 	angles = sinogram.shape[0]
 
 	scan_air = np.zeros((angles, n))
 	for angle in range(sinogram.shape[0]):
 		# FIXME: how to know the argument value of mas????
-		scan_air[angle] = ct_detect(photons, material.coeffs, depth)
+		scan_air[angle] = ct_detect(photons, material.coeff('Air'), depth)
 
 
 	# perform calibration based on eqn(4) in the handout
