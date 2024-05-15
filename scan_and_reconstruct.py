@@ -5,7 +5,7 @@ from ramp_filter import *
 from back_project import *
 from hu import *
 
-def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001):
+def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, with_filter=True):
 
 	""" Simulation of the CT scanning process
 		reconstruction = scan_and_reconstruct(photons, material, phantom, scale, angles, mas, alpha)
@@ -34,7 +34,7 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 
 	# convert to Hounsfield Units
 	# TODO:(RT)
-	#FIXME: function to be completed in section 7
+	# FIXME: function to be completed in section 7
 	reconstruction =  hu(photons, material, reconstruction, scale) 
 	
 

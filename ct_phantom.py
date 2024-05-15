@@ -93,7 +93,7 @@ def ct_phantom(names, n, type, metal=None, offset=None):
 
 	elif type == 2:
 		if offset is None:
-			offset = np.zeros(2)
+			offset = [0,0]
 		# impulse for looking at resolution
 		x = np.zeros((n, n))
 		x[int(n / 2) + offset[0]][int(n / 2) + offset[1]] = tissue
