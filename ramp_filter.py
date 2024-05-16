@@ -49,7 +49,7 @@ def ramp_filter_yq(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use
 	m = np.ceil(np.log(2*n-1) / np.log(2))
 	m = int(2 ** m)
 
-	freqs = np.fft.fftfreq(m)
+	freqs = np.fft.fftfreq(m, scale).astype(np.float32)
 	# the np.fft.fftfreq(m) function calculates the frequency bins that correspond to the FFT of an array of length m
 	# These bins represent the frequencies that each FFT coefficient corresponds to.
 	omega_list = freqs*2*np.pi
@@ -67,7 +67,7 @@ def ramp_filter_yq(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use
 	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
 	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
 	FT_filtered = np.multiply(FT, f_ary)
-	sinogram = np.fft.ifft(FT_filtered, n=n, axis=1)
+	sinogram = np.fft.ifft(FT_filtered, n=n, axis=1).real
 
 	print('Ramp filtering')
 	
