@@ -66,8 +66,8 @@ def test_3(pic):
 	y = scan_and_reconstruct(s, material, p, 0.1, 256)
 
 	# save some meaningful results
-	f = open('results/test_3_output.txt', mode='w')
-	f.write('Mean value is ' + str(np.mean(y[64:192, 64:192])))
+	f = open('results/test_3_output.txt', mode='a')
+	f.write('Mean value is ' + str(np.mean(y[64:192, 64:192]))+ "\n" )
 	f.close()
 
 	# how to check whether these results are actually correct?
