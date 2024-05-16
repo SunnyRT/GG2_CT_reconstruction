@@ -14,8 +14,9 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 		number of angles, time-current product in mas, and raised-cosine power
 		alpha for filtering. The output reconstruction is the same size as phantom."""
 
-
+	#FIXME: 
 	# convert source (photons per (mas, cm^2)) to photons
+	photons = photons * mas * (scale ** 2)
 
 	# TODO: by YQ
 	# create sinogram from phantom data, with received detector values
@@ -26,6 +27,7 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	sinogram = ct_calibrate(photons, material, sinogram, scale)
 
 	# Ram-Lak
+	sinogram = ramp_filter(sinogram, scale, alpha)
 
 	# TODO: by YQ
 	# Back-projection
