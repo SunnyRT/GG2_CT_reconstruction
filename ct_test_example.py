@@ -18,59 +18,69 @@ source = Source()
 # all the output should be saved in a 'results' directory
 
 def test_1(pic):
-	# explain what this test is for
+	"""draw the reconstructed image and plot values of an impulse, simple disc or hip implant respectively using an '100kVp, 3mm Al' energy source packet"""
 
 	# work out what the initial conditions should be
 	p = ct_phantom(material.name, 256, pic)
 	s = source.photon('100kVp, 3mm Al')
 	y = scan_and_reconstruct(s, material, p, 0.01, 256)
 
+	save_plot(y[128,:], 'results', 'test_1_p'+ str(int(pic))+ '_plot')
 	# save some meaningful results
-	save_draw(y, 'results', 'test_1_image')
-	save_draw(p, 'results', 'test_1_phantom')
+	save_draw(y, 'results', 'test_1_p'+ str(int(pic))+ '_image')
+	save_draw(p, 'results', 'test_1_p'+ str(int(pic))+ '_phantom')
 
 	# how to check whether these results are actually correct?
+	"""Check that the 2 drawings of reconstructed scan image and direct phantom image are identical"""
+	"""Check that cross-section values of the reconstructed image are consistent with the drawings"""
 
 
-def test_2(pic):
-	# TODO: (by YQ) 
-	# explain what this test is for
+# def test_2_yq():
+# 	# TODO: (by YQ) 
+# 	# explain what this test is for
 
-	# work out what the initial conditions should be
-	# 1 - simple circle for looking at calibration issues
-	# 2 - point attenuator for looking at resolution
-	#3 - single large hip replacement
-	p_circle = ct_phantom(material.name, 256, 1)
-	p_point = ct_phantom(material.name, 256, 2)
-	p_hip = ct_phantom(material.name, 256, 3)
+# 	# work out what the initial conditions should be
+# 	# 1 - simple circle for looking at calibration issues
+# 	# 2 - point attenuator for looking at resolution
+# 	#3 - single large hip replacement
+# 	p_circle = ct_phantom(material.name, 256, 1)
+# 	p_point = ct_phantom(material.name, 256, 2)
+# 	p_hip = ct_phantom(material.name, 256, 3)
 
-	s = source.photon('80kVp, 1mm Al')
+# 	s = source.photon('80kVp, 1mm Al')
 
-	y_circle = scan_and_reconstruct(s, material, p_circle, 0.01, 256)
-	y_point = scan_and_reconstruct(s, material, p_point, 0.01, 256)
-	y_hip = scan_and_reconstruct(s, material, p_hip, 0.01, 256)
+# 	y_circle = scan_and_reconstruct(s, material, p_circle, 0.01, 256)
+# 	y_point = scan_and_reconstruct(s, material, p_point, 0.01, 256)
+# 	y_hip = scan_and_reconstruct(s, material, p_hip, 0.01, 256)
 	
-	# save some meaningful results
-	save_plot(y_circle[128,:], 'results', 'test_2_plot_circle')
-	save_plot(y_point[128,:], 'results', 'test_2_plot_point')
-	save_plot(y_hip[128,:], 'results', 'test_2_plot_hip')
+# 	# save some meaningful results
+# 	save_plot(y_circle[128,:], 'results', 'test_2_plot_circle')
+# 	save_plot(y_point[128,:], 'results', 'test_2_plot_point')
+# 	save_plot(y_hip[128,:], 'results', 'test_2_plot_hip')
+	
 
-	# how to check whether these results are actually correct?
+# 	# how to check whether these results are actually correct?
 
-def test_3(pic):
-	# explain what this test is for
+def test_2():
+	"""Output the mean value of the scanned and reconstructed image of a simple disc with different materials 
+	using an ideal source packet"""
 
 	# work out what the initial conditions should be
-	p = ct_phantom(material.name, 256, pic)
+	
 	s = fake_source(source.mev, 0.1, method='ideal')
-	y = scan_and_reconstruct(s, material, p, 0.1, 256)
-
-	# save some meaningful results
+	mat_test = ["Soft Tissue", "Water", "Titanium"]
+	results = np.empty(len(mat_test))
+	for (i,mat_name) in enumerate(mat_test):
+		p =  ct_phantom(material.name, 256, 1, metal = mat_name)
+		y = scan_and_reconstruct(s, material, p, 0.1, 256)
+		results[i] = np.mean(y[64:192, 64:192])
+		print("measured attenuation coefficient for ", mat_name, " is ", results[i])
+	
 	f = open('results/test_3_output.txt', mode='a')
-	f.write('Mean value is ' + str(np.mean(y[64:192, 64:192]))+ "\n" )
+	f.write(f'Detected mean attenuation coefficient for {mat_test} are {results}\n')
+	# assume ideal fake_source peak at 0.07MeV
+	f.write(f'Expected mean attenuation coefficient for {mat_test} are [0.204, 0.194, 2.472]\n') # assume ideal fake_source peak at 0.07MeV
 	f.close()
-
-	# how to check whether these results are actually correct?
 
 
 # Run the various tests

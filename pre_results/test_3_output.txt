@@ -1,0 +1,20 @@
+<<<<<<< HEAD
+Mean value is 0.203327186252089
+=======
+<<<<<<< HEAD
+Peak value of non-filtered image is 0.006791137552952394
+Peak value of filtered image with alpha = 0 is 0.14580772693602237
+Peak value of filtered image with alpha = 0.1 is 0.13284129331203173
+=======
+Mean value is 0.203327186252089
+>>>>>>> refs/remotes/origin/main
+
+
+
+Detected mean attenuation coefficient for ['Soft Tissue', 'Water', 'Titanium'] are [nan nan nan]
+
+Expected mean attenuation coefficient for ['Soft Tissue', 'Water', 'Titanium'] are [0.204, 0.194, 2.472]
+>>>>>>> 482e18521221b4fcd49473bc18ac86fb887f4527
+
+Mean value is 0.2547399081384209
+

@@ -71,7 +71,7 @@ def test_1():
 # 	# how to check whether these results are actually correct?
 # 	return sinogram_nofilter
 
-def test_3():
+def test_3_rt():
 	"""Output the mean value of the scanned and reconstructed image of a simple disc with different materials 
 	using an ideal source packet"""
 
