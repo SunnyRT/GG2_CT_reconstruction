@@ -12,7 +12,7 @@ def test():
 		choice = input("Enter your choice: ")
       
 		if choice == '1':
-			print("Please choose a phantom to scan: ")
+			print("Please choose a phantom to scan: ")q
 			print("1. pic_1")
 			print("2. pic_2")
 			print("3. pic_3")
