@@ -40,22 +40,23 @@ def test_1():
 	
 
 def test_2():
-	"""Compare 1-line plot the scanned and reconstructed image with the original phantom 2 of a point attenuator located at origin
-	using a lower energy source packet"""
+	"""Investigate impulse response of ramp_filter function at different values of alpha"""
 
-	# work out what the initial conditions should be
+	# initial conditions: single point attenuator at origin
 	p = ct_phantom(material.name, 256, 2)
-	s = source.photon('80kVp, 1mm Al')
-	y = scan_and_reconstruct(s, material, p, 0.01, 256)
+	s = source.photon('100kVp, 3mm Al')
+	y_nofilter = scan_and_reconstruct(s, material, p, 0.01, 256, with_filter=False)
+	y_alpha_0 = scan_and_reconstruct(s, material, p, 0.01, 256, alpha=0)
+	y_alpha_0_1 = scan_and_reconstruct(s, material, p, 0.01, 256, alpha=0.1)
 
-    # FIXME: what are the units of the output????
 	# save some meaningful results
-	save_plot(y[128,:], p[128,:], 'results', 'test_2_plot', labels = ['reconstucted image', 'phantom'])
+	save_plot(y_nofilter[128,:], p[128,:], 'results', 'test_2_plot', labels = ['reconstucted image', 'phantom'])
 	# save some meaningful results
 	save_draw(y, 'results', 'test_2_image')
 	save_draw(p, 'results', 'test_2_phantom')
 
 	# how to check whether these results are actually correct?
+	return y_nofilter
 
 def test_3():
 	"""Output the mean value of the scanned and reconstructed image of a simple circle with varying radius (phantom 1) 
