@@ -27,6 +27,8 @@ def test_1():
 	p = ct_phantom(material.name, 256, 3)
 	s = source.photon('100kVp, 3mm Al')
 	y = scan_and_reconstruct(s, material, p, 0.01, 256)
+	s_ideal = source.fake_source(source.mev, 0.1, method='ideal')
+	y_ideal = 
 
 	# save some meaningful results
 	save_draw(y, 'results', 'test_1_image')
