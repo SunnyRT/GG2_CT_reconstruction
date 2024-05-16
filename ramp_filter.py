@@ -2,7 +2,7 @@ import math
 import numpy as np
 import numpy.matlib
 
-def ramp_filter(sinogram, scale, alpha=0.001):
+def ramp_filter_rt(sinogram, scale, alpha=0.001):
 	""" Ram-Lak filter with raised-cosine for CT reconstruction
 
 	fs = ramp_filter(sinogram, scale) filters the input in sinogram (angles x samples)
@@ -40,7 +40,7 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	return sinogram
 
 # TODO:(attempted by YQ)
-def ramp_filter_yq(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use the parameter "scale"
+def ramp_filter(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use the parameter "scale"
 	# get input dimensions
 	angles = sinogram.shape[0]
 	n = sinogram.shape[1]
@@ -49,7 +49,7 @@ def ramp_filter_yq(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use
 	m = np.ceil(np.log(2*n-1) / np.log(2))
 	m = int(2 ** m)
 
-	freqs = np.fft.fftfreq(m, scale).astype(np.float32)
+	freqs = np.fft.fftfreq(m, scale)
 	# the np.fft.fftfreq(m) function calculates the frequency bins that correspond to the FFT of an array of length m
 	# These bins represent the frequencies that each FFT coefficient corresponds to.
 	omega_list = freqs*2*np.pi
