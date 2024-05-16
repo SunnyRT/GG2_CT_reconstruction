@@ -68,7 +68,7 @@ def test_2():
 	# work out what the initial conditions should be
 	
 	s = fake_source(source.mev, 0.1, method='ideal')
-	mat_test = ["Soft Tissue", "Water", "Titanium"]
+	mat_test = ["Soft Tissue", "Water", "Bone"]
 	results = np.empty(len(mat_test))
 	for (i,mat_name) in enumerate(mat_test):
 		p =  ct_phantom(material.name, 256, 1, metal = mat_name)
@@ -78,8 +78,8 @@ def test_2():
 	
 	f = open('results/test_3_output.txt', mode='a')
 	f.write(f'Detected mean attenuation coefficient for {mat_test} are {results}\n')
-	# assume ideal fake_source peak at 0.07MeV
-	f.write(f'Expected mean attenuation coefficient for {mat_test} are [0.204, 0.194, 2.472]\n') # assume ideal fake_source peak at 0.07MeV
+	# assume ideal fake_source with peak at 0.07MeV
+	f.write(f'Expected mean attenuation coefficient for {mat_test} are [0.204, 0.194, 0.502]\n') # assume ideal fake_source peak at 0.07MeV
 	f.close()
 
 
