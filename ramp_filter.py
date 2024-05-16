@@ -69,7 +69,7 @@ def ramp_filter(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use th
 	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
 	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
 	FT_filtered = np.multiply(FT, ramp)
-	sinogram = np.fft.ifft(FT_filtered, n=n, axis=1)
+	sinogram = np.fft.ifft(FT_filtered, n=m, axis=1)
 
 	print('Ramp filtering')
 	
