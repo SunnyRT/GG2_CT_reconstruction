@@ -28,11 +28,12 @@ def test_1():
 	s = source.photon('100kVp, 3mm Al')
 	y = scan_and_reconstruct(s, material, p, 0.01, 256)
 	s_ideal = source.fake_source(source.mev, 0.1, method='ideal')
-	y_ideal = 
+	y_ideal = scan_and_reconstruct(s_ideal, material, p, 0.01, 256)
 
 	# save some meaningful results
-	save_draw(y, 'results', 'test_1_image')
 	save_draw(p, 'results', 'test_1_phantom')
+	save_draw(y, 'results', 'test_1_image')
+	save_draw(y_ideal, 'results', 'test_1_image_ideal')
 
 	# how to check whether these results are actually correct?
 	# check that the 2 drawings of reconstructed scan image and direct phantom image are identical
