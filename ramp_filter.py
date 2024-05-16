@@ -65,6 +65,12 @@ def ramp_filter(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use th
 	# #	f_ary[i] = ramp_coefficient * (np.cos(omega_list[i] * math.pi / (2*omega_max)))**alpha
 	# cosine_window = (np.cos(omega_list * np.pi / (2 * omega_list.max())))**alpha
 	# ramp = ramp * cosine_window
+	# Ram-Lak filter with raised-cosine window	
+	raised_cosine = np.cos(omega_list * np.pi / (2 * omega_max))
+	raised_cosine = np.maximum(raised_cosine, 0)  # Ensure no negative values
+	raised_cosine[raised_cosine == 0] = 1  # Avoid zero values to prevent invalid power operations
+	raised_cosine = raised_cosine ** alpha
+	ramp = ramp * raised_cosine
 	
 	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
 	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
