@@ -84,11 +84,12 @@ def test_3():
 		p =  ct_phantom(material.name, 256, 1, metal = mat_name)
 		y = scan_and_reconstruct(s, material, p, 0.1, 256)
 		results[i] = np.mean(y[64:192, 64:192])
+		print("measured attenuation coefficient for ", mat_name, " is ", results[i])
 	
-	f = open('results/test_3_output.txt', mode='w')
-	f.write(f'Detected mean attenuation coefficient for {mat_test} are {results}')
+	f = open('results/test_3_output.txt', mode='a')
+	f.write(f'Detected mean attenuation coefficient for {mat_test} are {results}\n')
 	# assume ideal fake_source peak at 0.07MeV
-	f.write(f'Expected mean attenuation coefficient for {mat_test} are [0.204, 0.194, 2.472]') # assume ideal fake_source peak at 0.07MeV
+	f.write(f'Expected mean attenuation coefficient for {mat_test} are [0.204, 0.194, 2.472]\n') # assume ideal fake_source peak at 0.07MeV
 	f.close()
 	
 
