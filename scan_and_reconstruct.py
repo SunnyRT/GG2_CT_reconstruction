@@ -37,7 +37,7 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	# convert to Hounsfield Units
 	# TODO:(RT)
 	# FIXME: function to be completed in section 7
-	reconstruction =  hu(photons, material, reconstruction, scale) 
+	#reconstruction =  hu(photons, material, reconstruction, scale) 
 	
 
 	return reconstruction
