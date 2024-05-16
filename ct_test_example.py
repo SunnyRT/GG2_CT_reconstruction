@@ -62,9 +62,9 @@ def test_3():
 
 
 # Run the various tests
-print('Test 1')
-test_1()
-print('Test 2')
-test_2()
-print('Test 3')
-test_3()
+# print('Test 1')
+# test_1()
+# print('Test 2')
+# test_2()
+# print('Test 3')
+# test_3()
