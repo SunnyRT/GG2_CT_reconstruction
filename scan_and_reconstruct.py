@@ -27,7 +27,8 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	sinogram = ct_calibrate(photons, material, sinogram, scale)
 
 	# Ram-Lak
-	sinogram = ramp_filter(sinogram, scale, alpha)
+	if with_filter: # enable options to reconstruct with / without filtering
+		sinogram = ramp_filter(sinogram, scale, alpha)
 
 	# TODO: by YQ
 	# Back-projection

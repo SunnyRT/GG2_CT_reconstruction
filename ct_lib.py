@@ -43,17 +43,18 @@ def save_draw(data, storage_directory, file_name, map='gray', caxis=None, title=
 	plt.savefig(full_path)
 	plt.close()
 
-def save_plot(data1, data2, storage_directory, file_name, xlim=None, ylim=None, title=None, labels=None):
+def save_plot(datas, storage_directory, file_name, xlim=None, ylim=None, title=None, labels=None):
 	"""save a graph"""
 	full_path = get_full_path(storage_directory, file_name)
-	if data2 is None:
-		plt.plot(data1)
-	else:
-		if labels is None:
-			labels = ['data1', 'data2']
-		plt.plot(data1, label=labels[0])
-		plt.plot(data2, label=labels[1]) #TODO:(RT) allow 2 plots on the same figure for direct comparison
-		plt.legend()
+	if datas.ndim == 1:
+		datas = np.array([datas])
+	
+	if labels is None:
+		labels = ["data " + str(i) for i in range(len(datas))]
+	for data in datas:
+		plt.plot(datas, label=labels[0])
+		 #TODO:(RT) allow multiple plots on the same figure for direct comparison
+	plt.legend()
 
 	if xlim is not None:
 		plt.xlim( xlim[0], xlim[1] )
