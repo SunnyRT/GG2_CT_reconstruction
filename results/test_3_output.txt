@@ -1,0 +1,3 @@
+Peak value of non-filtered image is 0.006791137552952394
+Peak value of filtered image with alpha = 0 is 0.14580772693602237
+Peak value of filtered image with alpha = 0.1 is 0.13284129331203173
