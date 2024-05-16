@@ -1,1 +1,11 @@
+<<<<<<< HEAD
 Mean value is 0.2547399081384209
+=======
+<<<<<<< HEAD
+Peak value of non-filtered image is 0.006791137552952394
+Peak value of filtered image with alpha = 0 is 0.14580772693602237
+Peak value of filtered image with alpha = 0.1 is 0.13284129331203173
+=======
+Mean value is 0.203327186252089
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 361044a7ec4d9bdd215ceecee870d951788607f5

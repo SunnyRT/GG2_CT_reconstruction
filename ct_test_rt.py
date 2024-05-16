@@ -39,39 +39,59 @@ def test_1():
 	# check that the 2 drawings of reconstructed scan image and direct phantom image are identical
 	
 
-def test_2():
-	"""Investigate impulse response of ramp_filter function at different values of alpha"""
+# def test_2():
+# 	"""Investigate impulse response of ramp_filter function at different values of alpha"""
 
-	# initial conditions: single point attenuator at origin
-	p = ct_phantom(material.name, 256, 2)
-	s = source.photon('100kVp, 3mm Al')
-	y_nofilter = scan_and_reconstruct(s, material, p, 0.01, 256, with_filter=False)
-	y_alpha_0 = scan_and_reconstruct(s, material, p, 0.01, 256, alpha=0)
-	y_alpha_0_1 = scan_and_reconstruct(s, material, p, 0.01, 256, alpha=0.1)
+# 	# initial conditions: single point attenuator at origin
+# 	p = ct_phantom(material.name, 256, 2)
+# 	fake_source(source.mev, 0.1, method='ideal')
+# 	sinogram_nofilter, y_nofilter = scan_and_reconstruct(s, material, p, 0.01, 256, with_filter=False)
+# 	alphas = np.array([0,0.0001,0.01,0.1,1])
+	
+# 	peak_value = np.empty(len(alphas))
+# 	for i in range(len(alphas)):
+		
+# 	y_nofilter = back_project(sinogram_nofilter)
+	
+# 	y_alpha_0 = back_project(ramp_filter(sinogram_nofilter, 0.01, alpha=0))
+# 	y_alpha_01 = back_project(ramp_filter(sinogram_nofilter, 0.01, alpha=0.1))
 
-	# save some meaningful results
-	save_plot(y_nofilter[128,:], p[128,:], 'results', 'test_2_plot', labels = ['reconstucted image', 'phantom'])
-	# save some meaningful results
-	save_draw(y, 'results', 'test_2_image')
-	save_draw(p, 'results', 'test_2_phantom')
+# 	results = np.array([y_nofilter[128,:], y_alpha_0[128,:], y_alpha_01[128,:]])
+# 	# save some meaningful results
+# 	save_plot(y_nofilter[128,:], 'results', 'test_2_plot_nofilter')
+# 	save_plot(y_alpha_0[128,:], 'results', 'test_2_plot_alpha0')
+# 	save_plot(y_alpha_01[128,:], 'results', 'test_2_plot_alpha01')
+# 	# # save some meaningful results
+# 	f = open('results/test_3_output.txt', mode='w')
+# 	f.write('Peak value of non-filtered image is ' + str(np.max(y_nofilter)))
+# 	f.write('Peak value of filtered image with alpha = 0 is ' + str(np.max(y_alpha_0)))
+# 	f.write('Peak value of filtered image with alpha = 0.1 is ' + str(np.max(y_alpha_01)))
+# 	f.close()
 
-	# how to check whether these results are actually correct?
-	return y_nofilter
+# 	# how to check whether these results are actually correct?
+# 	return sinogram_nofilter
 
 def test_3():
-	"""Output the mean value of the scanned and reconstructed image of a simple circle with varying radius (phantom 1) 
+	"""Output the mean value of the scanned and reconstructed image of a simple disc with different materials 
 	using an ideal source packet"""
 
 	# work out what the initial conditions should be
-	p = ct_phantom(material.name, 256, 1)
+	
 	s = fake_source(source.mev, 0.1, method='ideal')
-	y = scan_and_reconstruct(s, material, p, 0.1, 256)
-
-	# save some meaningful results
+	mat_test = ["Soft Tissue", "Water", "Titanium"]
+	results = np.empty(len(mat_test))
+	for (i,mat_name) in enumerate(mat_test):
+		p =  ct_phantom(material.name, 256, 1, metal = mat_name)
+		y = scan_and_reconstruct(s, material, p, 0.1, 256)
+		results[i] = np.mean(y[64:192, 64:192])
+	
 	f = open('results/test_3_output.txt', mode='w')
-	f.write('Mean value is ' + str(np.mean(y[64:192, 64:192])))
-	f.write('Reconstructed value of entire phatom 1' + str(y)) #TODO:(RT) write the entire constructed image
+	f.write(f'Detected mean attenuation coefficient for {mat_test} are {results}')
+	# assume ideal fake_source peak at 0.07MeV
+	f.write(f'Expected mean attenuation coefficient for {mat_test} are [0.204, 0.194, 2.472]') # assume ideal fake_source peak at 0.07MeV
 	f.close()
+	
+
 
 	# how to check whether these results are actually correct?
 

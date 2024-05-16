@@ -51,8 +51,8 @@ def save_plot(datas, storage_directory, file_name, xlim=None, ylim=None, title=N
 	
 	if labels is None:
 		labels = ["data " + str(i) for i in range(len(datas))]
-	for data in datas:
-		plt.plot(data, label=labels[0])
+	for (i,data) in enumerate(datas):
+		plt.plot(data, label=labels[i])
 		 #TODO:(RT) allow multiple plots on the same figure for direct comparison
 	plt.legend()
 
