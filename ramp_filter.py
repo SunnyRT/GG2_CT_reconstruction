@@ -57,16 +57,18 @@ def ramp_filter(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use th
 	ramp = np.abs(omega_list)/(2*np.pi)
 
 	# Approximate correction: replacing the zero at k = 0 with 1/6 of the value at k=1
-	ramp[0] = (1/6)*ramp[1]
-	ramp = np.array(ramp)
+	#ramp[0] = (1/6)*ramp[1]
+	#ramp = np.array(ramp)
 
-	f_ary = np.zeros(ramp)
-	for (i, ramp_coefficient) in enumerate(ramp):
-		f_ary[i] = ramp_coefficient * (np.cos(omega_list[i] * math.pi / m))**alpha
+	#f_ary = np.zeros(ramp)
+	#for (i, ramp_coefficient) in enumerate(ramp):
+	#	f_ary[i] = ramp_coefficient * (np.cos(omega_list[i] * math.pi / (2*omega_max)))**alpha
+	cosine_window = (np.cos(omega_list * np.pi / (2 * omega_list.max())))**alpha
+	ramp = ramp * cosine_window
 	
 	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
 	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
-	FT_filtered = np.multiply(FT, f_ary)
+	FT_filtered = np.multiply(FT, ramp)
 	sinogram = np.fft.ifft(FT_filtered, n=n, axis=1).real
 
 	print('Ramp filtering')
