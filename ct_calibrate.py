@@ -28,4 +28,7 @@ def ct_calibrate(photons, material, sinogram, scale):
 
 	# perform calibration based on eqn(4) in the handout
 	sinogram = -np.log(sinogram / scan_air)
+
+	# TODO: include beam hardening for water
+	
 	return sinogram

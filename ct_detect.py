@@ -57,7 +57,7 @@ def ct_detect(p, coeffs, depth, mas=10000):
 	# sum this over energies
 	detector_photons = np.sum(detector_photons, axis=0)
 
-	# model noise
+	# TODO: model noise (Background noise + scattering noise)
 
 	
 	# minimum detection is one photon
