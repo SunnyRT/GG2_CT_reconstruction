@@ -1,4 +1,0 @@
-Detected mean attenuation coefficient for ['Soft Tissue', 'Water', 'Titanium'] are [0.20332719 0.19307488 1.13024201]
-Expected mean attenuation coefficient for ['Soft Tissue', 'Water', 'Titanium'] are [0.204, 0.194, 2.472]
-Detected mean attenuation coefficient for ['Bone'] are [0.50108505]
-Expected mean attenuation coefficient for ['Bone'] are [0.204, 0.194, 0.502]

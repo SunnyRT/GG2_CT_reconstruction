@@ -39,37 +39,37 @@ def test_1():
 	# check that the 2 drawings of reconstructed scan image and direct phantom image are identical
 	
 
-# def test_2():
-# 	"""Investigate impulse response of ramp_filter function at different values of alpha"""
+def test_impulse_alpha():
+	"""Investigate impulse response of ramp_filter function at different values of alpha"""
 
-# 	# initial conditions: single point attenuator at origin
-# 	p = ct_phantom(material.name, 256, 2)
-# 	fake_source(source.mev, 0.1, method='ideal')
-# 	sinogram_nofilter, y_nofilter = scan_and_reconstruct(s, material, p, 0.01, 256, with_filter=False)
-# 	alphas = np.array([0,0.0001,0.01,0.1,1])
+	# initial conditions: single point attenuator at origin
+	p = ct_phantom(material.name, 256, 2)
+	s = fake_source(source.mev, 0.1, method='ideal')
+	sinogram_nofilter = scan_and_reconstruct(s, material, p, 0.01, 256, reconstruct=False, with_filter=False)
 	
-# 	peak_value = np.empty(len(alphas))
-# 	for i in range(len(alphas)):
-		
-# 	y_nofilter = back_project(sinogram_nofilter)
-	
-# 	y_alpha_0 = back_project(ramp_filter(sinogram_nofilter, 0.01, alpha=0))
-# 	y_alpha_01 = back_project(ramp_filter(sinogram_nofilter, 0.01, alpha=0.1))
 
-# 	results = np.array([y_nofilter[128,:], y_alpha_0[128,:], y_alpha_01[128,:]])
-# 	# save some meaningful results
-# 	save_plot(y_nofilter[128,:], 'results', 'test_2_plot_nofilter')
-# 	save_plot(y_alpha_0[128,:], 'results', 'test_2_plot_alpha0')
-# 	save_plot(y_alpha_01[128,:], 'results', 'test_2_plot_alpha01')
-# 	# # save some meaningful results
-# 	f = open('results/test_3_output.txt', mode='w')
-# 	f.write('Peak value of non-filtered image is ' + str(np.max(y_nofilter)))
-# 	f.write('Peak value of filtered image with alpha = 0 is ' + str(np.max(y_alpha_0)))
-# 	f.write('Peak value of filtered image with alpha = 0.1 is ' + str(np.max(y_alpha_01)))
-# 	f.close()
+	alphas = np.array([0,0.0001,0.01,0.1,1])
+	peak_mu = np.empty(len(alphas)+1)
+	peak_mu[0] = back_project(sinogram_nofilter[128,:]) # No filter
+	for (i,alpha) in enumerate(alphas):
+		sinogram = ramp_filter(sinogram_nofilter, 0.01, alpha)
+		reconstruction = back_project(sinogram)
+		peak_mu[i+1] = np.max(reconstruction[128,:])
 
-# 	# how to check whether these results are actually correct?
-# 	return sinogram_nofilter
+	# save some meaningful results
+	f = open('ramp_filter_alpha.txt', mode='w')
+	f.write('Peak value of non-filtered image is ' + str(np.max(peak_mu[0])) + '\n')
+	f.write('Peak value of filtered image with alpha = ' + str(alphas) + ' is ' + str(peak_mu[1:]))
+	f.close()
+
+	# plot out peak reconstructed result with different alpha values
+	plt.plot(alphas, peak_mu[1:], label='Ramp filter with alpha')
+	plt.hlines(peak_mu[0], 0, 1, label='No filter')
+	plt.xscale('log')
+
+	# how to check whether these results are actually correct?
+	return peak_mu
+
 
 def test_3_rt():
 	"""Output the mean value of the scanned and reconstructed image of a simple disc with different materials 
