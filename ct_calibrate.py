@@ -33,7 +33,7 @@ from scipy import interpolate
 # TODO: (RT) updated 19/05/2024
 from attenuate import attenuate
 
-def ct_calibrate(photons, material, sinogram, scale):
+def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 
 	""" ct_calibrate convert CT detections to linearised attenuation
 	sinogram = ct_calibrate(photons, material, sinogram, scale) takes the CT detection sinogram
@@ -51,10 +51,15 @@ def ct_calibrate(photons, material, sinogram, scale):
 	# perform calibration based on eqn(4) in the handout
 	sinogram = -np.log(sinogram / scan_air)
 
-	# TODO: include beam hardening for water
-	t_w = np.arange(0, 10.1, 0.1)
-	p_w = attenuate(photons, material.coeff('Water'), t_w) # attenuation of water for each thickness
-	# Fit a function f to map p_w to t_w
-	f = interpolate.interp1d(p_w, t_w)
-	
+	if harden_w:
+		# TODO: include beam hardening for water
+		t_w = np.arange(0, 10.1, 0.1) # FIXME: not sure if the number of thicknesses is sufficient
+		p_w = attenuate(photons, material.coeff('Water'), t_w) # attenuation of water for each thickness
+		# Fit a function f to map p_w to t_w
+		f = interpolate.interp1d(p_w, t_w)
+		# Determine equivalent water thickness for each measured sinogram value p_m
+		t_wm = f(sinogram)
+		C = 1.0 # FIXME: C is a chosen constant so that p ~= p_m at some arbitrary low thickness of material
+		sinogram = C*t_wm
+
 	return sinogram

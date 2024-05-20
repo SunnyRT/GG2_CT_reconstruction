@@ -5,7 +5,7 @@ from ramp_filter import *
 from back_project import *
 from hu import *
 
-def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, reconstruct = True, with_filter=True):
+def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, reconstruct = True, with_filter=True, harden_w = False):
 
 	""" Simulation of the CT scanning process
 		reconstruction = scan_and_reconstruct(photons, material, phantom, scale, angles, mas, alpha)
@@ -22,13 +22,13 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	# create sinogram from phantom data, with received detector values
 	sinogram = ct_scan(photons, material, phantom, scale, angles, mas)
 
-	# FIXME: Check if this is correct
-	# TODO:(RT) Add in poisson transmission noise, which is approximated with a normal distribution
-	sinogram = np.random.normal(sinogram, np.sqrt(sinogram))
+	# # FIXME: Check if this is correct
+	# # TODO:(RT) Add in poisson transmission noise, which is approximated with a normal distribution
+	# sinogram = np.random.normal(sinogram, np.sqrt(sinogram))
 
 	# TODO:(RT)
 	# convert detector values into calibrated attenuation values
-	sinogram = ct_calibrate(photons, material, sinogram, scale)
+	sinogram = ct_calibrate(photons, material, sinogram, scale, harden_w = False)
 
 	if not reconstruct:
 		return sinogram
