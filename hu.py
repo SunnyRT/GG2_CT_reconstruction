@@ -8,14 +8,16 @@ def hu(p, material, reconstruction, scale):
 	calibrated = hu(p, material, reconstruction, scale) converts the reconstruction into Hounsfield
 	Units, using the material coefficients, photon energy p and scale given."""
 
+	
 	# TODO: (by YQ)
+	#print("Reconstuction shape", reconstruction.shape)
 	n = reconstruction.shape[1] # number of r offset values i.e. number of dectors per angle
-	depth = np.array([2*n*scale]) # Total distance between source and detectors = double phantom size
+	depth = 2*n*scale # Total distance between source and detectors = double phantom size
 
 	# use water to calibrate
 	water_coeff = material.coeff('Water')
 
-	sinogram = ct_detect(p, water_coeff, depth)
+	I_tot = ct_detect(p, water_coeff, depth)
 	# put this through the same calibration process as the normal CT data
 	total_attenuation_water = ct_calibrate(p, material, np.array(I_tot, ndmin=2), scale)
 	reconstruction_water = total_attenuation_water/depth
@@ -26,7 +28,7 @@ def hu(p, material, reconstruction, scale):
 
 	# For medical CT, Hounsfield Units are usually stored as integers between the 12-bit range of -1024 and 3072
 	# with any values outside this range set to the nearest limit
-	stored_HU = np.clip(HU, -1024.0, 3072.0)
+	stored_HU = np.clip(HU, -1024.0, 3072.0).astype('int')
 
 	c = 0
 	w = 200
