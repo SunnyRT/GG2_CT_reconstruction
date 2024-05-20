@@ -52,5 +52,9 @@ def ct_calibrate(photons, material, sinogram, scale):
 	sinogram = -np.log(sinogram / scan_air)
 
 	# TODO: include beam hardening for water
+	t_w = np.arange(0, 10.1, 0.1)
+	p_w = attenuate(photons, material.coeff('Water'), t_w) # attenuation of water for each thickness
+	# Fit a function f to map p_w to t_w
+	f = interpolate.interp1d(p_w, t_w)
 	
 	return sinogram
