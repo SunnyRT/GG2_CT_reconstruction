@@ -82,6 +82,64 @@ def test_2():
 
 	f.close()
 
+def test_3(pic,source_string):
+	
+	"""Output the variance of the scanned and reconstructed image of with different materials """
+	# Create the mapping dictionary for material indices and names
+	material_index_map = {
+		0: "Air",
+		1: "Adipose",
+		2: "Soft Tissue",
+		3: "Breast Tissue",
+		4: "Water",
+		5: "Blood",
+		6: "Bone",
+		7: "Titanium",
+		8: "Cobalt",
+		9: "Chromium",
+		10: "Iron",
+		11: "Carbon",
+		12: "Nickel",
+		13: "Manganese",
+		14: "Aluminium",
+		15: "Copper",
+		16: "Co-Cr",
+		17: "Stainless Steel",
+		18: "Acrylic"
+	}
+	# Initial conditions
+	p = ct_phantom(material.name, 256, pic)
+	
+	s = source.photon(source_string)
+	y = scan_and_reconstruct(s, material, p, 0.01, 256)
+ 	# Initialize a dictionary to hold coefficients for each unique material index
+	coefficients_dict = {}
+
+    # Iterate through 'p' and 'y' to populate the dictionary
+	for i in range(p.shape[0]):
+		for j in range(p.shape[1]):
+			material_index = p[i][j]
+			coefficient = y[i][j]
+
+			# Initialize the list if the material index is not already in the dictionary
+			if material_index not in coefficients_dict:
+				coefficients_dict[material_index] = []
+
+			coefficients_dict[material_index].append(coefficient)
+
+    # Calculate the variance for the coefficients of each material
+	variance_dict = {material_index: np.var(coefficients) for material_index, coefficients in coefficients_dict.items()}
+
+    # Print the variances
+	for material_index, variance in variance_dict.items():
+		material_name = material_index_map.get(material_index, "Unknown material")
+		print(f"Variance for material {material_name}: {variance}")
+	
+	#f = open('results/test_3_variance.txt', mode='a')
+	#f.write(f'Detected variance for source {source_string} and material are {results}.\n')
+
+	#f.close()
+
 
 # Run the various tests
 # print('Test 1')
