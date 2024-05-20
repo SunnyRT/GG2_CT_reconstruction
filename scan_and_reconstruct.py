@@ -14,13 +14,17 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 		number of angles, time-current product in mas, and raised-cosine power
 		alpha for filtering. The output reconstruction is the same size as phantom."""
 
-	#FIXME: 
+	
 	# convert source (photons per (mas, cm^2)) to photons
 	photons = photons * mas * (scale ** 2)
 
 	# TODO: by YQ
 	# create sinogram from phantom data, with received detector values
-	sinogram = ct_scan(photons, material, phantom, scale, angles, mas) 
+	sinogram = ct_scan(photons, material, phantom, scale, angles, mas)
+
+	# FIXME: Check if this is correct
+	# TODO:(RT) Add in poisson transmission noise, which is approximated with a normal distribution
+	sinogram = np.random.normal(sinogram, np.sqrt(sinogram))
 
 	# TODO:(RT)
 	# convert detector values into calibrated attenuation values
