@@ -37,8 +37,8 @@ def test_1(pic):
 	# plot the 1D cross-section of the reconstructed image
 	save_plot(y[128,:], 'results', 'test_1_p'+ str(int(pic))+ '_plot')
 	# display the drawings of the reconstructed image and the phantom
-	save_draw(y, 'results', 'test_1_p'+ str(int(pic))+ '_image')
-	save_draw(p, 'results', 'test_1_p'+ str(int(pic))+ '_phantom')
+	save_draw(y, 'results', 'test_1_p'+ str(int(pic))+ '_image', caxis=[-1,2])
+	save_draw(p_mu, 'results', 'test_1_p'+ str(int(pic))+ '_phantom_mu', caxis=[-1,2])
 
 	# to check whether the results are correct, compare the images visually
 	"""Check that the 2 drawings of reconstructed scan image and direct phantom image are identical"""
