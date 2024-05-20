@@ -17,15 +17,12 @@ def test_4():
     """contrast reconstructed image using real vs ideal source packet"""
 
     pic = int(input("Enter the phantom type: "))
-    p = ct_phantom(material.name, 256, pic) # TODO: can try a different material type for pic = 1
+    metal = input("Enter the metal type: ")
+    p = ct_phantom(material.name, 256, pic, metal=metal) # TODO: can try a different material type for pic = 1
 
     # convert phantom where each pixel stores material index to attenuation coefficient mu at the peak energy value
     peak_energy = 0.07 # MeV
-    peak_energy_idx = np.nonzero(material.mev==peak_energy)[0][0]
-    p_mu = np.empty(p.shape)
-    for i in range(p.shape[0]):
-        for j in range(p.shape[1]):
-            p_mu[i,j] = material.coeff(material.name[int(p[i,j])])[peak_energy_idx]
+    p_mu = phantom_mu(p, material, peak_energy)
 
     s_real = source.photon('100kVp, 3mm Al')
     y_real = scan_and_reconstruct(s_real, material, p, 0.01, 256)
@@ -39,3 +36,11 @@ def test_4():
 
     # how to check whether these results are actually correct?
     # check that the 2 drawings of reconstructed scan image and direct phantom image are identical
+
+
+def test_4_2():
+    """Check that the water calibration function in ct_calibrate.py 
+    generates the correct result when scanning a disk made entirely of water, as well as other materials"""
+    pic = int(input("Enter the phantom type: "))
+    metal = input("Enter the metal type: ")
+    p = ct_phantom(material.name, 256, pic, metal=metal)

@@ -25,11 +25,7 @@ def test_1(pic):
 	
 	# convert phantom where each pixel stores material index to attenuation coefficient mu at the peak energy value
 	peak_energy = 0.07 # MeV
-	peak_energy_idx = np.nonzero(material.mev==peak_energy)[0][0]
-	p_mu = np.empty(p.shape)
-	for i in range(p.shape[0]):
-		for j in range(p.shape[1]):
-			p_mu[i,j] = material.coeff(material.name[int(p[i,j])])[peak_energy_idx]
+	p_mu = phantom_mu(p, material, peak_energy)
 	
 	s = source.photon('100kVp, 3mm Al')
 	y = scan_and_reconstruct(s, material, p, 0.01, 256)
