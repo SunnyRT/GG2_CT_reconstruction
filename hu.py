@@ -17,7 +17,7 @@ def hu(p, material, reconstruction, scale):
 
 	sinogram = ct_detect(p, water_coeff, depth)
 	# put this through the same calibration process as the normal CT data
-	total_attenuation_water = ct_calibrate(p, material, sinogram, scale)
+	total_attenuation_water = ct_calibrate(p, material, np.array(I_tot, ndmin=2), scale)
 	reconstruction_water = total_attenuation_water/depth
 
 	# use result to convert to hounsfield units
