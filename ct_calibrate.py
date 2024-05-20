@@ -46,7 +46,7 @@ def ct_calibrate(photons, material, sinogram, scale):
 	# length (has to be the same as in ct_scan.py)
 	n = sinogram.shape[1]
 	depth = 2*n*scale
-	scan_air = sum(attenuate(photons, material.coeff('Air'), depth)) # scalar calibration value
+	scan_air = sum(attenuate(photons, material.coeff('Air'), depth)) # scalar calibration value: sum over all energy bins
 
 	# perform calibration based on eqn(4) in the handout
 	sinogram = -np.log(sinogram / scan_air)

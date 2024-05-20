@@ -1,6 +1,7 @@
 import numpy as np
 from attenuate import *
 from ct_calibrate import *
+from ct_detect import *
 
 def hu(p, material, reconstruction, scale):
 	""" convert CT reconstruction output to Hounsfield Units
