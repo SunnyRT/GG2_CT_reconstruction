@@ -205,3 +205,14 @@ def ct_phantom(names, n, type, metal=None, offset=None):
 	x = np.flipud(x)
 	
 	return x
+
+
+def phantom_mu(p, material, peak_energy):
+	"""converts a phantom with material indices to attenuation coefficients at peak energy"""
+	peak_energy_idx = np.nonzero(material.mev==peak_energy)[0][0]
+	p_mu = np.empty(p.shape)
+	for i in range(p.shape[0]):
+		for j in range(p.shape[1]):
+			p_mu[i,j] = material.coeff(material.name[int(p[i,j])])[peak_energy_idx]
+	
+	return p_mu
