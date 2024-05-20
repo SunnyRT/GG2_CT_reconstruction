@@ -28,7 +28,7 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 
 	# TODO:(RT)
 	# convert detector values into calibrated attenuation values
-	sinogram = ct_calibrate(photons, material, sinogram, scale, harden_w = False)
+	sinogram = ct_calibrate(photons, material, sinogram, scale, harden_w = harden_w)
 
 	if not reconstruct:
 		return sinogram

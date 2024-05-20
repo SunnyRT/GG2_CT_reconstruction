@@ -1,6 +1,7 @@
 import numpy as np
 import scipy
 from scipy import interpolate
+from ct_detect import ct_detect
 
 
 # # TODO: (RT)
@@ -42,6 +43,22 @@ def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 	material structure containing names, linear attenuation coefficients and
 	energies in mev, and scale is the size of each pixel in x, in cm."""
 
+	# FIXME: not sure if water beam hardening correction should be placed before air calibration
+	if harden_w:
+		# TODO: include beam hardening for water
+		t_w = np.arange(0, 100.1, 0.1) # FIXME: not sure if the number of thicknesses is sufficient
+
+		# FIXME: show the source be photons, or ideal version with same peak energy?
+		p_w = ct_detect(photons, material.coeff('Water'), t_w) # attenuation of water for each thickness
+		# Fit a function f to map p_w to t_w
+		f = interpolate.interp1d(p_w, t_w)
+		# Determine equivalent water thickness for each measured sinogram value p_m
+		
+		t_wm = f(sinogram)
+		C = 1.0 # FIXME: C is a chosen constant so that p ~= p_m at some arbitrary low thickness of material
+		sinogram = t_wm * C
+
+
 	# Get dimensions and work out detection for just air of twice the side
 	# length (has to be the same as in ct_scan.py)
 	n = sinogram.shape[1]
@@ -49,17 +66,6 @@ def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 	scan_air = sum(attenuate(photons, material.coeff('Air'), depth)) # scalar calibration value: sum over all energy bins
 
 	# perform calibration based on eqn(4) in the handout
-	sinogram = -np.log(sinogram / scan_air)
+	sinogram_calibrated = -np.log(sinogram / scan_air)
 
-	if harden_w:
-		# TODO: include beam hardening for water
-		t_w = np.arange(0, 10.1, 0.1) # FIXME: not sure if the number of thicknesses is sufficient
-		p_w = attenuate(photons, material.coeff('Water'), t_w) # attenuation of water for each thickness
-		# Fit a function f to map p_w to t_w
-		f = interpolate.interp1d(p_w, t_w)
-		# Determine equivalent water thickness for each measured sinogram value p_m
-		t_wm = f(sinogram)
-		C = 1.0 # FIXME: C is a chosen constant so that p ~= p_m at some arbitrary low thickness of material
-		sinogram = C*t_wm
-
-	return sinogram
+	return sinogram_calibrated

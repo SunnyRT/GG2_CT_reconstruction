@@ -1,0 +1,7 @@
+Actual attenuation coefficient for Water disk are 0.193689970069948.
+Detected attenuation coefficient without beam hardening calibration for Water disk are 0.2669908013080456.
+Detected attenuation coefficient with beam hardening calibration (using water) for Water disk are 4.228852162672402.
+
+Actual attenuation coefficient for Bone disk are 0.502343497211306.
+Detected attenuation coefficient without beam hardening calibration for Bone disk are 0.8281627298940715.
+Detected attenuation coefficient with beam hardening calibration (using water) for Bone disk are 3.810154290059132.
