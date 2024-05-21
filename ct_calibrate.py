@@ -53,6 +53,7 @@ def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 	# perform calibration based on eqn(4) in the handout
 	sinogram = -np.log(sinogram / scan_air)
 
+	# FIXME: check that water becomes flat in the disk phantom test!!!!
 
 	if harden_w:
 		"""Apply water hardening correction to sinogram"""
