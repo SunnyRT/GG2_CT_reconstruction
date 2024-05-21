@@ -43,21 +43,6 @@ def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 	material structure containing names, linear attenuation coefficients and
 	energies in mev, and scale is the size of each pixel in x, in cm."""
 
-	# FIXME: not sure if water beam hardening correction should be placed before air calibration
-	if harden_w:
-		# TODO: include beam hardening for water
-		t_w = np.arange(0, 100.1, 0.1) # FIXME: not sure if the number of thicknesses is sufficient
-
-		# FIXME: show the source be photons, or ideal version with same peak energy?
-		p_w = ct_detect(photons, material.coeff('Water'), t_w) # attenuation of water for each thickness
-		# Fit a function f to map p_w to t_w
-		f = interpolate.interp1d(p_w, t_w)
-		# Determine equivalent water thickness for each measured sinogram value p_m
-		
-		t_wm = f(sinogram)
-		C = 1.0 # FIXME: C is a chosen constant so that p ~= p_m at some arbitrary low thickness of material
-		sinogram = t_wm * C
-
 
 	# Get dimensions and work out detection for just air of twice the side
 	# length (has to be the same as in ct_scan.py)
@@ -66,6 +51,24 @@ def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 	scan_air = sum(attenuate(photons, material.coeff('Air'), depth)) # scalar calibration value: sum over all energy bins
 
 	# perform calibration based on eqn(4) in the handout
-	sinogram_calibrated = -np.log(sinogram / scan_air)
+	sinogram = -np.log(sinogram / scan_air)
 
-	return sinogram_calibrated
+	# FIXME: check that water becomes flat in the disk phantom test!!!!
+
+	if harden_w:
+		"""Apply water hardening correction to sinogram"""
+		t_w = np.arange(0, 100.1, 0.1) # thickness of water in cm
+
+		# FIXME: should the source be photons, or ideal version with same peak energy?
+		p_w = ct_detect(photons, material.coeff('Water'), t_w) # attenuation of water for each thickness
+		p_w = -np.log(p_w / scan_air) # convert number of photons to attenuation
+
+		# Fit a function f to map p_w to t_w
+		f = interpolate.interp1d(p_w, t_w)
+
+		# Determine equivalent water thickness for each measured sinogram value p_m
+		t_wm = f(sinogram)
+		C = 0.194 # C is a chosen constant so that p ~= p_m at some arbitrary low thickness of material
+		sinogram = t_wm * C
+
+	return sinogram

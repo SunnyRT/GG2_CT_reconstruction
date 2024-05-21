@@ -1,7 +1,22 @@
+
+When C = 1.0
 Actual attenuation coefficient for Water disk are 0.193689970069948.
 Detected attenuation coefficient without beam hardening calibration for Water disk are 0.2669908013080456.
-Detected attenuation coefficient with beam hardening calibration (using water) for Water disk are 4.228852162672402.
+Detected attenuation coefficient with beam hardening calibration (using water) for Water disk are 0.9983530686059283.
+
+
+
+
+When C = 0.194
+Actual attenuation coefficient for Water disk are 0.193689970069948.
+Detected attenuation coefficient without beam hardening calibration for Water disk are 0.2669908013080456.
+# FIXME: The above two have such differences because the source used are not ideal!!!!!!!
+Detected attenuation coefficient with beam hardening calibration (using water) for Water disk are 0.1936804953095501.
 
 Actual attenuation coefficient for Bone disk are 0.502343497211306.
 Detected attenuation coefficient without beam hardening calibration for Bone disk are 0.8281627298940715.
-Detected attenuation coefficient with beam hardening calibration (using water) for Bone disk are 3.810154290059132.
+Detected attenuation coefficient with beam hardening calibration (using water) for Bone disk are 0.6475258255745273.
+
+Actual attenuation coefficient for Titanium disk are 2.47240852255811.
+Detected attenuation coefficient without beam hardening calibration for Titanium disk are 2.5662375016193986.
+Detected attenuation coefficient with beam hardening calibration (using water) for Titanium disk are 2.237585124115408.
