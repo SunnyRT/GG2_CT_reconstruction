@@ -43,6 +43,16 @@ def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 	material structure containing names, linear attenuation coefficients and
 	energies in mev, and scale is the size of each pixel in x, in cm."""
 
+
+	# Get dimensions and work out detection for just air of twice the side
+	# length (has to be the same as in ct_scan.py)
+	n = sinogram.shape[1]
+	depth = 2*n*scale
+	scan_air = sum(attenuate(photons, material.coeff('Air'), depth)) # scalar calibration value: sum over all energy bins
+
+	# perform calibration based on eqn(4) in the handout
+	sinogram = -np.log(sinogram / scan_air)
+
 	# FIXME: not sure if water beam hardening correction should be placed before air calibration
 	if harden_w:
 		# TODO: include beam hardening for water
@@ -58,14 +68,4 @@ def ct_calibrate(photons, material, sinogram, scale, harden_w = False):
 		C = 1.0 # FIXME: C is a chosen constant so that p ~= p_m at some arbitrary low thickness of material
 		sinogram = t_wm * C
 
-
-	# Get dimensions and work out detection for just air of twice the side
-	# length (has to be the same as in ct_scan.py)
-	n = sinogram.shape[1]
-	depth = 2*n*scale
-	scan_air = sum(attenuate(photons, material.coeff('Air'), depth)) # scalar calibration value: sum over all energy bins
-
-	# perform calibration based on eqn(4) in the handout
-	sinogram_calibrated = -np.log(sinogram / scan_air)
-
-	return sinogram_calibrated
+	return sinogram
