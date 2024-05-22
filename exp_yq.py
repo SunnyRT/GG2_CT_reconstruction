@@ -25,9 +25,9 @@ photons = s * mas * (scale ** 2)
 
 	# TODO: by YQ
 	# create sinogram from phantom data, with received detector values
-for a in angles: 
-    sinogram = ct_scan(photons, material, p, scale, a, mas)
-    draw(sinogram)
+#for a in angles: 
+    #sinogram = ct_scan(photons, material, p, scale, a, mas)
+    #draw(sinogram)
 
 #y = scan_and_reconstruct(s, material, p, 0.01, 256)
 #draw(y, caxis=[-1, 2])
@@ -38,7 +38,7 @@ def test_yq():
 
 	# initial conditions
 	s = fake_source(source.mev, 0.1, method='ideal')
-	mat_test = ["Water", "Air", "Soft Tissue", "Bone"]
+	mat_test = ["Water", "Soft Tissue", "Bone"]
 	alphas = [0, 0.0001, 0.001, 0.1, 0.2, 0.4, 0.6, 0.8]
 	results = np.empty(len(mat_test))
 	
@@ -48,8 +48,9 @@ def test_yq():
 	per_error = np.empty(len(mat_test))
 
 	for (i,mat_name) in enumerate(mat_test):
-		p =  ct_phantom(material.name, 256, 1, metal = mat_name)
-		y = scan_and_reconstruct(s, material, p, 0.1, 256, alpha = 0.8)
+		p =  ct_phantom(material.name, 256, 3)
+		y = scan_and_reconstruct(s, material, p, 0.1, 256, alpha = 5)
+		draw(y, caxis=[-1, 2])
 		results[i] = np.mean(y[64:192, 64:192])
 		print("measured attenuation coefficient for ", mat_name, " is ", results[i])
 
@@ -57,7 +58,8 @@ def test_yq():
 		per_error[i] = (results[i] - mu[i]) / mu[i] * 100
 	
 	f = open('results/test_yq_output.txt', mode='a')
-	f.write(f'Alpha = 0.8 \n')
+	f.write(f'----------- \n')
+	f.write(f'alpha = 5 \n')
 	f.write(f'Detected mean attenuation coefficient for {mat_test} are {results}.\n')
 
 	# assume ideal fake_source with peak at 0.07MeV
@@ -67,4 +69,4 @@ def test_yq():
 
 	f.close()
 	
-#test_yq()
+test_yq()
