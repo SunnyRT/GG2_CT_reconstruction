@@ -21,6 +21,7 @@ def hu(p, material, reconstruction, scale):
 	# put this through the same calibration process as the normal CT data
 	total_attenuation_water = ct_calibrate(p, material, np.array(I_tot, ndmin=2), scale)
 	reconstruction_water = total_attenuation_water/depth
+	print(reconstruction_water)
 
 	# use result to convert to hounsfield units
 	# limit minimum to -1024, which is normal for CT data.
@@ -30,8 +31,5 @@ def hu(p, material, reconstruction, scale):
 	# with any values outside this range set to the nearest limit
 	stored_HU = np.clip(HU, -1024.0, 3072.0).astype('int')
 
-	c = 0
-	w = 200
-	reconstruction = ((stored_HU - c)/w)*128 + 128
 
-	return reconstruction
+	return stored_HU

@@ -13,7 +13,8 @@ material = Material()
 source = Source()
 
 p = ct_phantom(material.name, 256, 3)
-s = source.photon('100kVp, 3mm Al')
+s = fake_source(source.mev, 0.1, method='ideal')
+s_1 = source.photon('80kVp, 3mm Al')
 # convert phantom where each pixel stores material index to attenuation coefficient mu at the peak energy value
 peak_energy = 0.07 # MeV
 p_mu = phantom_mu(p, material, peak_energy)
@@ -29,8 +30,33 @@ photons = s * mas * (scale ** 2)
     #sinogram = ct_scan(photons, material, p, scale, a, mas)
     #draw(sinogram)
 
-#y = scan_and_reconstruct(s, material, p, 0.01, 256)
-#draw(y, caxis=[-1, 2])
+y = scan_and_reconstruct(s, material, p, 0.01, 256, hounsfield=True)
+#print(y)
+print(y.max())
+#y_1 = scan_and_reconstruct(s_1, material, p, 0.01, 256, hounsfield=True)
+
+#soft_tissue
+c = 0
+w = 200
+reconstruction = ((y - c)/w)*128 + 128
+
+c = 3000
+w = 200
+reconstruction_1 = ((y - c)/w)*128 + 128
+
+draw(y)
+
+draw(reconstruction)
+
+draw(reconstruction, caxis=[-100, 100])
+draw(reconstruction_1, caxis=[-100, 100])
+
+
+
+#draw(y_1)
+#draw(y_1, caxis=[-1, 2])
+#create_dicom(y, 'ct_data', 0.1)
+
 
 def test_yq():
 	"""Output the mean value of the scanned and reconstructed image of a simple disc with different materials 
@@ -69,4 +95,5 @@ def test_yq():
 
 	f.close()
 	
-test_yq()
+#test_yq()
+
