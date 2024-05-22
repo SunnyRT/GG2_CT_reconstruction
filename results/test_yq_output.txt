@@ -34,28 +34,3 @@ Alpha = 0.8
 Detected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [0.1898896  0.         0.19997276 0.49281832].
 Expected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [1.93689970e-01 2.11800436e-04 2.03963690e-01 5.02343497e-01].
 Percentage error for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [  -1.96208986 -100.           -1.95668401   -1.89614828]%.
------------ 
-angels = 32 
-Detected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [0.1930817  0.         0.20333437 0.50110275].
-Expected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [1.93689970e-01 2.11800436e-04 2.03963690e-01 5.02343497e-01].
-Percentage error for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [  -0.31404104 -100.           -0.30854432   -0.24699095]%.
------------ 
-alpha = 1 
-Detected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [0.19307869 0.         0.2033312  0.50109494].
-Expected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [1.93689970e-01 2.11800436e-04 2.03963690e-01 5.02343497e-01].
-Percentage error for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [  -0.31559627 -100.           -0.31009964   -0.24854723]%.
------------ 
-alpha = 2 
-Detected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [0.19307921 0.         0.20333174 0.50109627].
-Expected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [1.93689970e-01 2.11800436e-04 2.03963690e-01 5.02343497e-01].
-Percentage error for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [  -0.31533027 -100.           -0.30983362   -0.24828106]%.
------------ 
-alpha = 5 
-Detected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [0.19307877 0.         0.20333128 0.50109514].
-Expected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [1.93689970e-01 2.11800436e-04 2.03963690e-01 5.02343497e-01].
-Percentage error for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [  -0.3155549  -100.           -0.31005826   -0.24850583]%.
------------ 
-alpha = 2.5 
-Detected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [0.19307918 0.         0.20333171 0.5010962 ].
-Expected mean attenuation coefficient for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [1.93689970e-01 2.11800436e-04 2.03963690e-01 5.02343497e-01].
-Percentage error for ['Water', 'Air', 'Soft Tissue', 'Bone'] are [  -0.31534464 -100.           -0.30984799   -0.24829543]%.
