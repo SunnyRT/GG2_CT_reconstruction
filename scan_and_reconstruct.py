@@ -5,7 +5,7 @@ from ramp_filter import *
 from back_project import *
 from hu import *
 
-def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, reconstruct = True, with_filter=True, harden_w = False, hounsfield = False):
+def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, noise = False, reconstruct = True, with_filter=True, interp = 'linear', harden_w = False, hu = False):
 
 	""" Simulation of the CT scanning process
 		reconstruction = scan_and_reconstruct(photons, material, phantom, scale, angles, mas, alpha)
@@ -22,9 +22,10 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	# create sinogram from phantom data, with received detector values
 	sinogram = ct_scan(photons, material, phantom, scale, angles, mas)
 
-	# # FIXME: Check if this is correct
-	# # TODO:(RT) Add in poisson transmission noise, which is approximated with a normal distribution
-	# sinogram = np.random.normal(sinogram, np.sqrt(sinogram))
+
+ 	# Add Poisson transmission noise, approximated with a normal distribution
+	if noise:
+		sinogram = np.random.normal(sinogram, np.sqrt(sinogram))
 
 	# TODO:(RT)
 	# convert detector values into calibrated attenuation values
@@ -41,7 +42,7 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 		# TODO: by YQ
 		# Back-projection
 		# The parameter "sinogram" is what we got after the ramp filter
-		reconstruction = back_project(sinogram)
+		reconstruction = back_project(sinogram, interp=interp)
 
 		if hu:
 			# convert to Hounsfield Units
