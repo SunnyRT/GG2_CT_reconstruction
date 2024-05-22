@@ -73,7 +73,7 @@ def ramp_filter(sinogram, scale, alpha=0.001): # FIXME: Not sure where to use th
 	ramp = ramp * raised_cosine
 	
 	# take Fourier transform of sinogram p(theta, r) in r direction (i.e.samples direction)
-	FT = np.fft.fft(sinogram, n = m, axis=1) #FIXME: unsure about output length n=m
+	FT = np.fft.fft(sinogram, n = m, axis=1) 
 	FT_filtered = FT * ramp
 	sinogram = np.fft.irfft(FT_filtered, n=m, axis=1)[:,:n]
 

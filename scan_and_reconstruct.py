@@ -22,9 +22,9 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	# create sinogram from phantom data, with received detector values
 	sinogram = ct_scan(photons, material, phantom, scale, angles, mas)
 
-	# # FIXME: Check if this is correct
-	# # TODO:(RT) Add in poisson transmission noise, which is approximated with a normal distribution
-	# sinogram = np.random.normal(sinogram, np.sqrt(sinogram))
+
+ 	# Add Poisson transmission noise, approximated with a normal distribution
+	sinogram = np.random.normal(sinogram, np.sqrt(sinogram))
 
 	# TODO:(RT)
 	# convert detector values into calibrated attenuation values
