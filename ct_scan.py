@@ -5,7 +5,7 @@ from ct_detect import ct_detect
 import math
 import sys
 
-def ct_scan(photons, material, phantom, scale, angles, mas=10000, mode = 'constant'):
+def ct_scan(photons, material, phantom, scale, angles, mas=10000, scan_order=1):
 
 	"""simulate CT scanning of an object
 	scan = ct_scan(photons, material, phantom, scale, angles, mas) takes a phantom
@@ -48,7 +48,7 @@ def ct_scan(photons, material, phantom, scale, angles, mas=10000, mode = 'consta
 		depth = np.zeros((len(material.coeffs), n)) # each column represents the material composition along the projection line for a particiular r offset
 
 		for index, m in enumerate(materials):
-			interpolated = scipy.ndimage.map_coordinates(material_phantom[index], [y0, x0], order=1, mode=mode, cval=0, prefilter=False)
+			interpolated = scipy.ndimage.map_coordinates(material_phantom[index], [y0, x0], order=scan_order, mode='constant', cval=0, prefilter=False)
 			depth[m] = np.sum(interpolated, axis=0) # sum over y0 direction
 
 		# only necessary for more complex forms of interpolation above
