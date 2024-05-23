@@ -49,7 +49,7 @@ draw(y)
 draw(reconstruction)
 
 draw(reconstruction, caxis=[-100, 100])
-draw(reconstruction_1, caxis=[-100, 100])
+draw(reconstruction_1, caxis=[-200, 200])
 
 
 

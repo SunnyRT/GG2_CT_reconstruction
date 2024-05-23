@@ -5,7 +5,7 @@ from ramp_filter import *
 from back_project import *
 from hu import *
 
-def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, noise = False, reconstruct = True, with_filter=True, interp = 'linear', harden_w = False, hu = False):
+def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, noise = False, reconstruct = True, with_filter=True, interp = 'linear', harden_w = False, hounsfield = False):
 
 	""" Simulation of the CT scanning process
 		reconstruction = scan_and_reconstruct(photons, material, phantom, scale, angles, mas, alpha)
@@ -44,7 +44,7 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 		# The parameter "sinogram" is what we got after the ramp filter
 		reconstruction = back_project(sinogram, interp=interp)
 
-		if hu:
+		if hounsfield:
 			# convert to Hounsfield Units
 			# TODO:(YQ)
 			reconstruction =  hu(photons, material, reconstruction, scale) 
