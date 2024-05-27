@@ -57,10 +57,20 @@ def ct_detect(p, coeffs, depth, mas=10000):
 	# sum this over energies
 	detector_photons = np.sum(detector_photons, axis=0)
 
-	# FIXME: Check if this is correct
-	# TODO:(RT) model noise (Background noise + scattering noise)
-	background_photons = 0.1 * mas # background noise is 0.1% of the current-time product
-	multiscatter_photons = 0.1 * detector_photons # scattering noise is 0.1% of the detected photons
+	# Calculate the actual number of source photons
+	source_photons = mas * np.sum(p)
+
+    # Estimate the transmitted scatter distribution
+	transmitted_scatter = 0.05 * source_photons  # Assume 5% of source photons are scattered
+
+    # Add additional detection due to indirect scattering
+	indirect_scattering = 0.1 * detector_photons  # Assume 10% of detected photons are due to indirect scattering
+
+    # Combine all components to get the final detected photons
+	total_detected_photons = detector_photons + transmitted_scatter + indirect_scattering
+
+	background_photons = 0.1 * mas  # background noise is 0.1% of the current-time product
+	multiscatter_photons = 0.1 * detector_photons  # scattering noise is 0.1% of the detected photons
 	
 	# minimum detection is one photon
 	detector_photons = np.clip(detector_photons, 1, None)
