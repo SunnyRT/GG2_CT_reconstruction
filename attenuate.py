@@ -11,13 +11,8 @@ def attenuate(original_energy, coeff, depth):
 	It is more efficient to calculate this for a range of samples rather then
 	one at a time
 	"""
-<<<<<<< HEAD
 	#print("Original energy shape:", original_energy.shape)
 	#print("Depth shape:", depth.shape)
-=======
-	# print("Original energy shape:", original_energy.shape)
-	# print("Depth shape:", depth.shape)
->>>>>>> e01c973bddbab57e6a67733561d6cf912360d2bb
 
 	# check original energy is energy x samples
 	# TODO: (taz) reshape(1,1) has dimension = 2, eg. original_energy = np.array([1, 2, 3, 4, 5]) sample = 1; eg. original_energy = np.array([1, 2, 3, 4, 5])%([6, 7, 8, 9, 10]) sample =5
