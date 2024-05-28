@@ -7,6 +7,7 @@ import sys
 from ramp_filter import *
 from back_project import *
 from create_dicom import *
+from hu import *
 
 class Xtreme(object):
     def __init__(self, file):
@@ -272,14 +273,34 @@ class Xtreme(object):
                 pass
             
             else:
-
+                print("Default reconstructing all")
                 # default method should reconstruct each slice separately
                 for scan in range(fan+self.skip_scans,fan+self.fan_scans-self.skip_scans):
                     if (scan<self.scans):
-
+                        # TODO: YQ
 						# reconstruct scan
+                        # Get the sinogram for the current scan
+                        slice, slice_min, slice_max = self.get_rsq_slice(scan)
+
+                        # Calibration
+                        caibrated_slice = -np.log((slice-slice_min)/(slice_max - slice_min))
+
+                        # Fan to parallel
+                        parallel_slice = self.fan_to_parallel(caibrated_slice)
+
+                        # Ram Lak filter
+                        RL_slice = ramp_filter(parallel_slice, self.scale*0.1, alpha)
+
+                        # Back projection
+                        reconstruction = back_project(RL_slice)
+
+                        # HU conversion
+                        #reconstruction = 1000 * (reconstruction - 23.835e-3) / 23.835e-3
+                        reconstruction = 1000 * (reconstruction - 0.205) / 0.205
+                        reconstruction = reconstruction.clip(min=-1024, max=3071)
 
 						# save as dicom file
+                        create_dicom(reconstruction, file, self.scale, self.scale, z, studyuid, seriesuid, frameuid, time)
                         z = z + 1
 
         return
