@@ -7,12 +7,12 @@ import os
 
 # Specify the path to your DICOM directory and a sample DICOM file for adjustment
 dicom_dir = '/Users/tonganze/Desktop/Cam IIA/GG2/Low resolution reconstructed CT data-20240527/dicom_data_b'
-dicom_file = '/Users/tonganze/Desktop/Cam IIA/GG2/Low resolution reconstructed CT data-20240527/dicom_data_b/b_0050.dcm'
+dicom_file = '/Users/tonganze/Desktop/Cam IIA/GG2/Low resolution reconstructed CT data-20240527/dicom_data_b/processed_b_0050.dcm'
 
 # Initial guess for the parameters
-x, y, r = 250, 263, 208  # Adjusted initial values for a smaller circle
-rect_left = (39, 206, 50, 110)  # Rectangle mask for the left side (x, y, width, height)
-rect_right = (413, 210, 50, 110)  # Rectangle mask for the right side (x, y, width, height)
+x, y, r = 250, 260, 220  # Adjusted initial values for a smaller circle
+rect_left = (39, 210, 50, 100)  # Rectangle mask for the left side (x, y, width, height)
+rect_right = (413, 216, 50, 100)  # Rectangle mask for the right side (x, y, width, height)
 
 def visualize_circle_and_rectangles(image, x, y, r, rect_left, rect_right):
     # Create a copy of the image
@@ -24,25 +24,20 @@ def visualize_circle_and_rectangles(image, x, y, r, rect_left, rect_right):
     cv2.rectangle(img_copy, (rect_right[0], rect_right[1]), (rect_right[0]+rect_right[2], rect_right[1]+rect_right[3]), (0, 255, 0), 2)
     return img_copy
 
-def remove_outer_circle(image, x, y, r):
+def remove_outer_circle_and_rectangles(image, x, y, r, rect_left, rect_right):
     # Create a mask for the circle
     mask = np.zeros_like(image, dtype=np.uint8)
     cv2.circle(mask, (x, y), r, (255, 255, 255), thickness=-1)
     mask = mask == 0
     image[mask] = 0
-    return image
 
-def remove_outer_circle_and_rectangles(image, x, y, r, rect_left, rect_right):
-    # Remove the outer circle
-    image = remove_outer_circle(image, x, y, r)
-    
     # Create masks for the rectangles
     image[rect_left[1]:rect_left[1]+rect_left[3], rect_left[0]:rect_left[0]+rect_left[2]] = 0
     image[rect_right[1]:rect_right[1]+rect_right[3], rect_right[0]:rect_right[0]+rect_right[2]] = 0
 
     return image
 
-def process_dicom(file_path, x, y, r, rect_left, rect_right, apply_rectangles, preview=False):
+def process_dicom(file_path, x, y, r, rect_left, rect_right, preview=False):
     # Read the DICOM file
     dicom_dataset = pydicom.dcmread(file_path)
 
@@ -50,11 +45,8 @@ def process_dicom(file_path, x, y, r, rect_left, rect_right, apply_rectangles, p
     if hasattr(dicom_dataset, 'pixel_array'):
         pixel_array = dicom_dataset.pixel_array
 
-        # Remove the outer circle and rectangles if needed
-        if apply_rectangles:
-            processed_image = remove_outer_circle_and_rectangles(pixel_array, x, y, r, rect_left, rect_right)
-        else:
-            processed_image = remove_outer_circle(pixel_array, x, y, r)
+        # Remove the outer circle and rectangles
+        processed_image = remove_outer_circle_and_rectangles(pixel_array, x, y, r, rect_left, rect_right)
 
         if preview:
             return processed_image, pixel_array
@@ -69,7 +61,7 @@ def process_dicom(file_path, x, y, r, rect_left, rect_right, apply_rectangles, p
         print(f"No image data found in {file_path}")
 
 # Read the DICOM file and get the image
-image = process_dicom(dicom_file, x, y, r, rect_left, rect_right, apply_rectangles=True, preview=True)
+image = process_dicom(dicom_file, x, y, r, rect_left, rect_right, preview=True)
 
 if image is not None:
     processed_image, original_image = image
@@ -97,15 +89,9 @@ if image is not None:
         else:
             print("Invalid input. Please enter 'x', 'y', 'r', 'rect_left', 'rect_right', or 'done'.")
 
-    # Apply the final parameters to the selected range of images in the directory
+    # Apply the final parameters to all images in the directory
     dicom_files = glob.glob(f"{dicom_dir}/*.dcm")
     for dicom_file in dicom_files:
-        # Extract the number from the filename to check the range
-        base_name = os.path.basename(dicom_file)
-        file_number = int(base_name.split('_')[1].split('.')[0])
-        if 48 <= file_number <= 72:
-            process_dicom(dicom_file, x, y, r, rect_left, rect_right, apply_rectangles=True)
-        elif file_number > 72:
-            process_dicom(dicom_file, x, y, r, rect_left, rect_right, apply_rectangles=False)
+        process_dicom(dicom_file, x, y, r, rect_left, rect_right)
 else:
     print("Failed to read the DICOM file.")
