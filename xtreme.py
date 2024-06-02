@@ -295,7 +295,7 @@ class Xtreme(object):
                         reconstruction = back_project(RL_slice)
 
                         # HU conversion
-                        reconstruction = 1000 * (reconstruction - 0.205) / 0.205
+                        reconstruction = 1000 * (reconstruction - 0.230) / 0.230
                         reconstruction = reconstruction.clip(min=-1024, max=3071)
 
 						# save as dicom file
