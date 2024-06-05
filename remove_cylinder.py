@@ -4,13 +4,14 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 import os
+import re
 
 # Specify the path to your DICOM directory and a sample DICOM file for adjustment
-dicom_dir = '/Users/tonganze/Desktop/Cam IIA/GG2/Low resolution reconstructed CT data-20240527/dicom_data_b'
-dicom_file = '/Users/tonganze/Desktop/Cam IIA/GG2/Low resolution reconstructed CT data-20240527/dicom_data_b/b_0050.dcm'
+dicom_dir = '/Users/tonganze/Desktop/Cam IIA/GG2/Low resolution reconstructed CT data-20240527/merged_dicom'
+dicom_file = '/Users/tonganze/Desktop/Cam IIA/GG2/Low resolution reconstructed CT data-20240527/merged_dicom/a_0048.dcm'
 
 # Initial guess for the parameters
-x, y, r = 250, 263, 208  # Adjusted initial values for a smaller circle
+x, y, r = 251, 264, 207  # Adjusted initial values for a smaller circle
 rect_left = (39, 206, 50, 110)  # Rectangle mask for the left side (x, y, width, height)
 rect_right = (413, 210, 50, 110)  # Rectangle mask for the right side (x, y, width, height)
 
@@ -99,13 +100,23 @@ if image is not None:
 
     # Apply the final parameters to the selected range of images in the directory
     dicom_files = glob.glob(f"{dicom_dir}/*.dcm")
-    for dicom_file in dicom_files:
-        # Extract the number from the filename to check the range
-        base_name = os.path.basename(dicom_file)
-        file_number = int(base_name.split('_')[1].split('.')[0])
-        if 48 <= file_number <= 72:
+
+# Adjust the loop to handle filenames correctly
+for dicom_file in dicom_files:
+    # Extract the number from the filename to check the range
+    base_name = os.path.basename(dicom_file)
+    
+    # Use a regular expression to find all numbers in the filename
+    numbers = re.findall(r'\d+', base_name)
+    
+    # If numbers are found, proceed with the first number
+    if numbers:
+        file_number = int(numbers[0])
+        
+        if file_number >= 930:
             process_dicom(dicom_file, x, y, r, rect_left, rect_right, apply_rectangles=True)
-        elif file_number > 72:
+        elif file_number < 930:
             process_dicom(dicom_file, x, y, r, rect_left, rect_right, apply_rectangles=False)
 else:
-    print("Failed to read the DICOM file.")
+        print(f"No numeric value found in filename: {base_name}")
+
